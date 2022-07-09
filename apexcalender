@@ -1,0 +1,38 @@
+
+## Table
+CREATE TABLE  "MY_TASK" 
+   (	"ID" NUMBER, 
+	"TITLE" VARCHAR2(100), 
+	"TYPE" VARCHAR2(20), 
+	"DSCRIPTION" VARCHAR2(200), 
+	"START_DATE" DATE, 
+	"END_DATE" DATE, 
+	"STATUS" VARCHAR2(20)
+   )
+/
+## Query
+select ID,
+       TITLE,
+       TYPE,
+       DSCRIPTION,
+       START_DATE,
+       END_DATE,
+       STATUS,
+       case
+      when status       = 'INACTIVE' then  'apex-cal-gray'
+      when type = 'BREAK'    then  'apex-cal-silver'
+      when type = 'BUSINESS' then  'apex-cal-orange'
+      when type = 'GENERAL'  then  'apex-cal-blue'
+      when type = 'TECHNICAL' then 'apex-cal-green'
+      when type = 'HANDS_ON' then 'apex-cal-lime'
+   end as css_class
+  from MY_TASK
+  
+  ## Drag and Drop PL/SQL Code
+  begin
+    update MY_TASK
+       set start_date = to_date(:APEX$NEW_START_DATE, 'YYYYMMDDHH24MISS'),
+           end_date = to_date(:APEX$NEW_END_DATE, 'YYYYMMDDHH24MISS')
+     where id = :APEX$PK_VALUE;
+end;
+  
